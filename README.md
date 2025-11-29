@@ -12,7 +12,7 @@ This repo contains:
 
 Python verification scripts: Reproduce the 8.1σ Kaluza-Klein resonance at k₁ = 1/τ = 0.142857 ± 0.000009 h Mpc⁻¹ and harmonics n=2–6 (>20σ combined) from JADES DR4 data.
 
-Overleaf LaTeX sources: Full manuscripts for "Undecidability in the Tau Universe: From Non-Computable Sums to Measurable Harmonics" (v2.0, DOI: 10.5281/zenodo.17711794) and the LQG quantization supplement (DOI: 10.5281/zenodo.17765010).
+Overleaf LaTeX sources: Full manuscripts for "Undecidability in the Tau Universe: From Non-Computable Sums to Measurable Harmonics" ([v2.0, DOI: 10.5281/zenodo.17711794](https://doi.org/10.5281/zenodo.17756566)) and the LQG quantization supplement ([DOI: 10.5281/zenodo.17765010](https://doi.org/10.5281/zenodo.17765010)).
 
 Predictions for the Four Witnesses: Testable forecasts for Euclid (2027, 22 Mpc rings), Roman (2027–), Rubin (2029), and CMB-S4 (2028–, ℓ≈1429 multipole).
 
