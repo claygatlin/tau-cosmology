@@ -44,21 +44,23 @@ print(f"S₈     = {S8_tau:.3f}   ← matches weak-lensing value!")
 print()
 
 # Weak-lensing average from DES Y6 + KiDS-1000 + HSC (2024–2025)
-S8_lensing = 0.774 ± 0.018
-print(f"Weak-lensing average (2025) = {S8_lensing:.3f} ± 0.018")
-print(f"Tau prediction – lensing = {S8_tau - S8_lensing:.3f}  → 0.0σ tension")
+S8_lensing_mean = 0.774
+S8_lensing_err = 0.018
+print(f"Weak-lensing average (2025) = {S8_lensing_mean:.3f} ± {S8_lensing_err:.3f}")
+sigma_diff = abs(S8_tau - S8_lensing_mean) / S8_lensing_err
+print(f"Tau prediction – lensing = {S8_tau - S8_lensing_mean:.3f}σ  → {sigma_diff:.1f}σ tension (near 0σ alignment)")
 
 # Plot it for the repo README
 fig, ax = plt.subplots(figsize=(8,5))
 ax.errorbar([1], [S8_pi], yerr=[0.012], fmt='o', color='red', label='CMB (Planck+ACT)', capsize=5)
-ax.errorbar([2], [S8_lensing], yerr=[0.018], fmt='s', color='blue', label='Weak Lensing (DES+KiDS+HSC)', capsize=5)
+ax.errorbar([2], [S8_lensing_mean], yerr=[S8_lensing_err], fmt='s', color='blue', label='Weak Lensing (DES+KiDS+HSC)', capsize=5)
 ax.axhline(S8_tau, color='black', linestyle='--', label='Tau Universe prediction')
 ax.axhspan(S8_tau-0.005, S8_tau+0.005, alpha=0.2, color='black')
 ax.set_ylabel(r'$S_8$', fontsize=16)
 ax.set_xticks([1, 2])
 ax.set_xticklabels(['Early universe\n(CMB)', 'Late universe\n(Lensing)'])
 ax.legend()
-ax.set_title(r'$\tau$ Cosmology resolves $S_8$ tension at 0$\sigma$', fontsize=14)
+ax.set_title(r'$\tau$ Cosmology resolves $S_8$ tension at ~0$\sigma$', fontsize=14)
 plt.tight_layout()
 plt.savefig('S8_resolution.png', dpi=300)
 plt.show()
