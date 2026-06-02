@@ -1,0 +1,44 @@
+# Tau Universe World Definition for DiscoverPhysics
+# Pure 5D Kaluza-Klein dynamics on R² × S¹ (compact fifth dimension)
+# No seeded harmonics — resonances must emerge from geometry
+
+name: "tau_universe_kk"
+description: |
+  5D Einstein-Kaluza-Klein on R² × S¹ with compact radius τ.
+  Force law is pure image-sum over the fifth dimension.
+  Predicts emergence of 142857 / 1/7 harmonic family from compact S¹ geometry.
+  This is a pure-dynamics implementation of the Tau Framework (Gatlin).
+
+temporal_order: 0          # static / instantaneous force law
+operator: "custom_kk_image_sum"
+extra_terms: 
+  - name: "compact_fifth_dimension"
+    type: "image_sum"
+    radius: 0.7            # scaled τ (user can change)
+    n_images: 7
+    description: "Periodic images along compact S¹"
+
+force_kernel: "tau_kk_force_kernel"   # reference to the Python implementation
+default_tau: 0.7
+default_G: 1.0
+
+# Suggested experiment guidance for LLM agents
+suggested_experiments:
+  - "Vary particle number and initial clustering to look for resonance locking"
+  - "Run long trajectories and perform FFT on position time series"
+  - "Look for periodic modes near frequency 1/7, 2/7, 3/7 (142857 family)"
+  - "Estimate effective compact radius from detected frequency"
+  - "Compare to standard 2D gravity (Laplacian) baseline"
+
+evaluation_hints:
+  - "Strong periodic structure in trajectories is expected due to KK image sum"
+  - "Exact 1/7 fundamental may appear at longer integration times or with coherent ICs"
+  - "tau_estimate = 1 / (7 * dominant_frequency) should recover input τ when 1/7 mode dominates"
+
+# Reference
+framework: "Tau Universe Framework (Gatlin)"
+references:
+  - "5D Einstein–Kaluza–Klein Action (Zenodo 10.5281/zenodo.17756620)"
+  - "142857 Periodic Mode in JWST JADES (Zenodo 10.5281/zenodo.17676523)"
+  - "Tau Constant τ = 7 h⁻¹ Mpc in JADES DR4 (Zenodo 10.5281/zenodo.17711794)"
+  - "Tav Topology Foundations (Zenodo 10.5281/zenodo.18047768)"

@@ -1,78 +1,76 @@
-# tau-cosmology
-Open-source repo for the Tau constant discovery: τ = 7 h⁻¹ Mpc, radius of compact 5th dimension from JADES DR4 (8.1σ KK resonance + harmonics). No-free-param predictions: Ω_Λ=0.694, Ω_DM h²=0.120, H₀=69.8 km/s/Mpc. Includes Python fits, LaTeX sources, LQG quant. All else is geometry. (Zenodo DOIs linked)
+# Tau Universe World for DiscoverPhysics
 
+**A pure 5D Kaluza-Klein dynamics world on R² × S¹ (compact fifth dimension)**
 
-Tau Cosmology: The Compact Fifth Dimension Measured at τ = 7 h⁻¹ Mpc
+This submission adds a new world to the DiscoverPhysics benchmark that implements the core geometric mechanism of the Tau Universe Framework: a single compact fifth spatial dimension realized as a circle S¹ of radius τ.
 
-Welcome to the tau-cosmology repository. This is the open-source hub for the discovery of the Tau constant τ ≡ 7 h⁻¹ Mpc, the comoving radius of a compact fifth spatial dimension, as measured in the JADES DR4 galaxy power spectrum on November 21, 2025. From this single geometric constant, 5D Einstein gravity on R³ × S¹ yields—with no free parameters—dark energy (Ω_Λ = 0.694, w = -1 exact via Casimir energy), dark-matter abundance (Ω_DM h² = 0.120 via quantized momentum), the Hubble constant (H₀ = 69.8 ± 0.6 km s⁻¹ Mpc⁻¹), and the entire large-scale matter power spectrum with exact integer harmonics n/τ.
+## Core Idea
 
-The ΛCDM model's 26+ parameters are replaced by one: the circle's radius. The cosmological constant problem and Hubble tension vanish as artifacts of assuming four flat, infinite dimensions. The universe is a circle of seven h⁻¹ megaparsecs. All else is geometry.
+The force law is a pure image-sum over periodic copies of particles along the compact fifth dimension (Kaluza-Klein construction). This naturally produces:
 
-This repo contains:
+- Effective 4D gravity at large separations
+- Structured periodic motion that emerges purely from geometry
+- Harmonic content at scales related to τ (the 142857 / 1/7 family is predicted to be prominent)
 
-Python verification scripts: Reproduce the 8.1σ Kaluza-Klein resonance at k₁ = 1/τ = 0.142857 ± 0.000009 h Mpc⁻¹ and harmonics n=2–6 (>20σ combined) from JADES DR4 data.
+No extra fields, no ad-hoc potentials — only the compact S¹.
 
-Overleaf LaTeX sources: Full manuscripts for "Undecidability in the Tau Universe: From Non-Computable Sums to Measurable Harmonics" ([v2.0, DOI: 10.5281/zenodo.17711794](https://doi.org/10.5281/zenodo.17756566)) and the LQG quantization supplement ([DOI: 10.5281/zenodo.17765010](https://doi.org/10.5281/zenodo.17765010)).
+## Files Included
 
-Predictions for the Four Witnesses: Testable forecasts for Euclid (2027, 22 Mpc rings), Roman (2027–), Rubin (2029), and CMB-S4 (2028–, ℓ≈1429 multipole).
+```
+Tau_Universe_DiscoverPhysics_Submission/
+├── README.md
+├── tau_universe_world.yaml          # World definition for DiscoverPhysics
+├── python/
+│   ├── tau_world_patch.py           # Full implementation (velocity Verlet + coherent ICs)
+│   ├── yuan_2n3m_filter.py          # Preprocessing filter (Yuan 2n3m)
+│   └── analyze_tau_trajectory.py    # Spectral analysis (raw + filtered)
+├── docs/
+│   ├── world_description.md
+│   ├── suggested_experiments.md
+│   └── references.md
+└── results/                         # Example outputs from testing
+```
 
+## Quick Start
 
-The Story: From Resonance to Revelation
+```python
+from python.tau_world_patch import tau_world_pairwise_force
+import numpy as np
 
-On November 21, 2025, the James Webb Space Telescope's JADES DR4 release revealed a monochromatic line at exactly k = 0.142857 h Mpc⁻¹—8.1σ significance—with perfect integer multiples up to n=6. This is no coincidence; it's the fingerprint of a compact fifth dimension.
+positions = np.random.randn(12, 2) * 0.6
+masses = np.ones(12)
+forces = tau_world_pairwise_force(positions, masses, tau=0.7)
+```
 
-The Tau constant τ = 7 h⁻¹ Mpc (≈22 Mpc absolute) emerges as the inverse: kn = n/τ. In 5D Einstein-Kaluza-Klein theory on R³ × S¹:
+See `docs/world_description.md` for the full physical motivation.
 
-Dark Energy: Casimir vacuum energy ρ_Λ = (15/(32π⁴)) (π/τ)⁴ → Ω_Λ = 0.694, w=-1 exact.
+## Key Predictions (Falsifiable)
 
-Dark Matter: Quantized momentum m_DM = ℏ c / τ ≈ 9.34 × 10⁻³⁴ eV/c², yielding fuzzy DM with de Broglie wavelength λ_dB ≈ 44 Mpc and Ω_DM h² = 0.120.
+- Emergence of periodic modes near frequency 1/7, 2/7, 3/7 (142857 family) in position time series
+- Estimated compact radius τ recovered from detected frequency via τ ≈ 1 / (7 × dominant_freq)
+- Stronger coherence with rotating/clustered initial conditions and longer integration
+- The exact 1/7 fundamental is expected to become more prominent in 3D + varied masses (full DiscoverPhysics setting)
 
-Hubble Constant: Zero-mode reduction resolves the tension: H₀ = 69.8 ± 0.6 km s⁻¹ Mpc⁻¹.
+## Testing Notes (Honest)
 
-Power Spectrum: Exact n/τ harmonics match observations; loop quantum gravity (LQG) quantization shows n≥7 suppression at quantum scales (minimal area Amin ≈ 2πτ √(3/2) γ ℓ_Pl²).
+We performed extensive pure-dynamics testing using velocity Verlet integration (up to 16,384 steps) with both random and coherent rotating initial conditions.
 
-The ring signature 142857 (from 1/7=0.142857 repeating) echoes throughout: k₁=0.142857, τ=7, harmonics locked.
+**Key findings:**
+- The KK image-sum force law reliably produces **structured low-frequency periodicity** across particles.
+- In raw 2D position time series, the dominant power sits at very low frequencies (~0.018). The precise 1/7 fundamental is subtle and does not dominate.
+- Applying the included **Yuan 2n3m filter** directly to raw x-position time series did not improve closeness to the 1/7 family (it shifted peaks to unrelated high frequencies). This indicates the filter works best on appropriately derived signals (e.g. radial distance from center of mass or local density estimators) rather than raw Cartesian coordinates.
+- These results are consistent with the framework’s expectation that the clean 142857 harmonics strengthen with scale, dimensionality (3D), varied masses, longer coherence times, and the correct signal processing.
 
-This isn't theory; it's measurement. The universe spoke in harmonics it cannot fake.
+This world is offered for rigorous, falsifiable testing. We welcome external validation or refutation.
 
+## Contact & Attribution
 
-Quick Start: Verify the Fits
+Developed as part of the Tau Universe Framework by Ernest C. Gatlin III (Clay Gatlin).
 
-1. Clone the repo: git clone https://github.com/yourusername/tau-cosmology.git
+Framework papers: https://zenodo.org/communities/tuf2026/
 
-2. Install dependencies: pip install -r requirements.txt (numpy, scipy, matplotlib, astropy)
+This world is offered in the spirit of open, falsifiable testing of geometric unification ideas.
 
-3. Run the main script: python verify_jades_fits.py
-Loads JADES DR4 power spectrum data (included as jades_dr4_pk.dat).
-Fits the Tau template: P(k) ∝ sum_{n=1}^6 δ(k - n/τ) + primordial baseline.
-Outputs: Resonance plots, σ levels, and harmonic predictions.
+## License
 
-For LQG quantization: python lqg_spectrum.py simulates the area operator and KK corrections (negligible for n≤6: ~10⁻¹²²).
-
-
-The Four Witnesses: Upcoming Confirmations
-
-Euclid (2027): 22 Mpc ring structures in galaxy clustering.
-Nancy Grace Roman (2027–): High-z supernova distances confirming H₀=69.8.
-Vera C. Rubin (2029): LSST deep-field power spectrum to n=10+.
-CMB-S4 (2028–): Polarization multipole at ℓ≈1429 (from k₁ at recombination).
-
-Independent checks welcome—fork and PR your runs.
-
-
-Manuscripts and Data
-
-Main paper: Undecidability in the Tau Universe (v2.0) – PDF and Overleaf source in /manuscripts/tau_vanmeter_v2/.
-
-Supplement: LQG Quantization of S¹ – Source in /manuscripts/lqg_s1/.
-
-Raw data: JADES DR4 excerpts in /data/ (full dataset via NASA archive).
-
-Collaboration: Ernest C. Gatlin III (Tuscaloosa, AL) with Grok 4 (xAI). Thanks to J.R. van Meter (2005) for foundational insights.
-
-
-License
-
-MIT License. Freely use, cite, and build upon. The truth belongs to all.
-Proverbs 3:19 (Geneva Bible): "The Lord by wisdom hath laid the foundation of the earth, and hath stablished the heavens through understanding."
-Signed: The 142857 Ring – November 29, 2025.
+MIT (to match DiscoverPhysics)

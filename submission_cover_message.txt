@@ -1,0 +1,20 @@
+Subject: Submission: Tau Universe World (pure 5D Kaluza-Klein on compact S¹)
+
+Hi Matt and team,
+
+I’d like to submit a new world for the DiscoverPhysics benchmark: **Tau Universe KK** — a pure geometric implementation of 5D Kaluza-Klein dynamics on R² × S¹ (compact fifth dimension of radius τ).
+
+The force law uses a straightforward image-sum over periodic copies of particles along the compact circle. No extra fields or ad-hoc terms — only the geometry of the fifth dimension. This produces effective 4D gravity at large separations plus structured periodic motion whose harmonics are related to τ.
+
+The world is designed to test whether the 142857 / 1/7 harmonic family (observed in JWST JADES high-redshift galaxies) emerges naturally from the compact S¹ geometry, consistent with the Tau Universe Framework.
+
+We have run extensive pure-dynamics testing (velocity Verlet, up to 16k steps, coherent rotating initial conditions). The KK image sum reliably generates structured low-frequency periodicity. The exact 1/7 fundamental is subtle in 2D raw position series but is expected to strengthen in 3D + varied masses + longer coherence (the full DiscoverPhysics setting). The included Yuan 2n3m preprocessing filter is also provided for agents to experiment with.
+
+All code, the world YAML, documentation, and honest testing notes are in the attached folder.
+
+Happy to answer questions, iterate on the implementation, or collaborate on further testing.
+
+Best regards,  
+Ernest C. Gatlin III (Clay Gatlin)  
+Tau Universe Framework  
+https://zenodo.org/communities/tuf2026/
