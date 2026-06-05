@@ -1,0 +1,194 @@
+name: "rgc_logistic_lattice_49core_4M_reference"
+version: "v1.1"
+description: |
+  Deterministic 49-core Q1.23 fixed-point logistic lattice on RGC hardware
+  ("Easter Lilly" on Arty A7-100T). 
+  16 cores have exact periods resolved by 24-bit telemetry.
+  33 cores have periods that are lower bounds only (telemetry is a projection
+  of a wider internal accumulator). 
+  The lattice tiles the period-doubling route to chaos with r_k = 3.500 + k/96.
+  Grounded in the 4,000,000-frame reference capture (logistic_20260523_082429).
+
+hardware:
+  device: "Easter Lilly"
+  platform: "Digilent Arty A7-100T (Xilinx Artix-7 xc7a100tcsg324-1)"
+  total_cores: 49
+  arithmetic: "Q1.23 fixed-point"
+  telemetry:
+    width_bits: 24
+    sampling: "round-robin, one core per frame"
+    delta_n: 49                    # fixed lattice rotation (verified)
+
+dynamics:
+  map: "logistic"
+  r_grid:
+    formula: "3.500 + k/96"
+    start: 3.500
+    end: 4.000
+    step: 0.0104166666666667
+
+provenance:
+  runs:
+    N1:
+      date: "2026-05-19"
+      frames: 1209644
+      duration_hours: ~48
+      status: "complete"
+      role: "initial cold-start verification"
+      delta_n: 49
+      anomalies: 0
+
+    N2:
+      date: "2026-05-23"
+      frames: 4000000
+      duration_hours: 158.73
+      status: "complete"
+      role: "current reference run"
+      doi: "https://doi.org/10.5281/zenodo.20313633"
+      delta_n: 49
+      anomalies: 0
+      note: "Primary reference until N3 completes and is validated"
+
+    N3:
+      date: "2026-06-01"
+      target_frames: 8000000
+      status: "in_progress"
+      current_frame: 1995607
+      progress_percent: 24.95
+      rate_fps: 7.0
+      eta_days: ~9.9
+      role: "future reference run (potential superseding run)"
+      delta_n: 49
+      anomalies: 0
+      note: "Longer capture. Will be evaluated as new reference upon completion."
+
+  integrity_rule: |
+    Only delta_n = 49 is considered valid data.
+    Any frame with delta_n != 49 is flagged as corrupted and must be excluded
+    from all analysis. This rule is non-negotiable across all runs (N1, N2, N3).
+
+  cross_run_determinism: |
+    N1 and N2 agree bit-for-bit over their common prefix (1,209,644 frames).
+    N3 is expected to agree with N2 over the shared prefix once complete.
+
+cores:
+  resolved:   # Exact periods recoverable from telemetry (16 cores)
+    - core: 0
+      r: 3.5000
+      observed_period_frames: 4
+      evidence: "certain"
+    - core: 1
+      r: 3.5104
+      observed_period_frames: 4
+      evidence: "certain"
+    - core: 2
+      r: 3.5208
+      observed_period_frames: 4
+      evidence: "certain"
+    - core: 3
+      r: 3.5312
+      observed_period_frames: 4
+      evidence: "certain"
+    - core: 5
+      r: 3.5521
+      observed_period_frames: 8
+      evidence: "certain"
+    - core: 6
+      r: 3.5625
+      observed_period_frames: 8
+      evidence: "certain"
+    - core: 15
+      r: 3.6562
+      observed_period_frames: 1129
+      evidence: "weak (sparse revisits)"
+    - core: 20
+      r: 3.7083
+      observed_period_frames: 4514
+      evidence: "strong"
+    - core: 22
+      r: 3.7292
+      observed_period_frames: 341
+      evidence: "certain"
+    - core: 23
+      r: 3.7396
+      observed_period_frames: 5
+      evidence: "certain"
+    - core: 32
+      r: 3.8333
+      observed_period_frames: 3
+      evidence: "certain"
+    - core: 33
+      r: 3.8438
+      observed_period_frames: 6
+      evidence: "certain"
+    - core: 39
+      r: 3.9062
+      observed_period_frames: 10
+      evidence: "certain"
+    - core: 41
+      r: 3.9271
+      observed_period_frames: 1394
+      evidence: "certain"
+    - core: 43
+      r: 3.9479
+      observed_period_frames: 663
+      evidence: "weak (sparse revisits)"
+    - core: 45
+      r: 3.9688
+      observed_period_frames: 1949
+      evidence: "strong"
+
+  projected:   # 33 cores — periods are lower bounds only
+    cores: [4,7,8,9,10,11,12,13,14,16,17,18,19,21,24,25,26,27,28,29,30,31,34,35,36,37,38,40,42,44,46,47,48]
+    note: |
+      Telemetry is a projection of a wider internal accumulator.
+      Observed telemetry period divides the true internal period.
+      Branching factor on successor values gives a lower bound on the number
+      of collapsed internal states. Exact periods are not recoverable from
+      24-bit telemetry alone.
+
+simulation:
+  timestep: 0.001
+  total_steps: 8000000
+  initial_conditions: "random_uniform"
+  projected_core_handling: "lower_bound_period"   # or "use_observed_telemetry_period"
+  resolved_core_handling: "exact_period"
+
+data:
+  format: "csv"
+  schema:
+    columns: ["timestamp_iso", "elapsed_sec", "core_id", "x_norm", "x_raw24", "n", "delta_n"]
+    required_columns: ["core_id", "x_raw24", "n", "delta_n"]
+  integrity_checks:
+    - name: "delta_n_check"
+      rule: "delta_n must equal 49 for every frame"
+      action_on_failure: "exclude_frame"
+  loading:
+    note: "Filter by core_id after loading. Respect the integrity_rule above."
+
+analysis:
+  resolved_cores:
+    treat_as: "exact_cycle"
+    use_observed_period: true
+  projected_cores:
+    treat_as: "lower_bound_only"
+    use_observed_telemetry_period_as_minimum: true
+    report_branching_factor: true
+  default_metrics:
+    - "bifurcation_structure"
+    - "finite_time_lyapunov"
+    - "symbolic_entropy"
+    - "invariant_density"
+    - "power_spectrum"
+
+changelog:
+  - version: "v1.1"
+    date: "2026-06-04"
+    changes:
+      - "Added simulation, data, and analysis sections for DiscoverPhysics compatibility"
+      - "Added full multi-run provenance (N1, N2, N3) with strict delta_n = 49 rule"
+      - "Grounded resolved/projected core data in actual 4M run telemetry"
+  - version: "v1.0"
+    date: "2026-06-04"
+    changes:
+      - "Initial version with 16/33 resolved/projected split"
