@@ -1,0 +1,18 @@
+# NGC 3198 Rotation-Curve Benchmark — Python dependencies
+#
+# Pin exact versions before publishing a release:  pip freeze > requirements.txt
+# Floors below are conservative and known-good.
+
+# --- Core: required now (reproducible_audit_script.py, tests/test_units.py) ---
+numpy>=1.24
+
+# --- Test runner (optional; tests also run via `python tests/test_units.py`) ---
+pytest>=7.0
+
+# --- Fit pipeline (roadmap — uncomment once src/ lands) ---
+# scipy>=1.10        # optimization, special functions
+# matplotlib>=3.7    # figures (fit, residuals, model comparison)
+# pandas>=2.0        # rotation-curve CSV I/O
+# emcee>=3.1         # MCMC posteriors
+# corner>=2.2        # posterior corner plots
+# dynesty>=2.1       # nested sampling / Bayesian evidence for model comparison
